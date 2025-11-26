@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Movie>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Movies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #f4f4f4;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+        }
+
+            .badge.active {
+                background: #d1e7dd;
+                color: #0f5132;
+            }
+
+            .badge.inactive {
+                background: #f8d7da;
+                color: #842029;
+            }
+    </style>
+</head>
+<body>
+
+    <h2>your cart is having</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Movie ID</th>
+                <th>Movie Name</th>
+                <th>Movie Descreption</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>@movie.Id</td>
+                    <td>@movie.Name</td>
+                    <td>@movie.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</body>
+</html>

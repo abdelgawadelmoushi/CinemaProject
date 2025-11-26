@@ -1,0 +1,294 @@
+﻿@model IEnumerable<Movie>
+
+@{
+    const double discount = 50;
+}
+
+<!-- Filter Section -->
+<section class="py-3 filter-bar">
+    <div class="container">
+        <div class="row" style="background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;">
+            <div class="col-12">
+                <form>
+                    <div class="row">
+                        <!-- Movie Name -->
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" placeholder="Movie Name" name="ProductName" value="@ViewBag.MovieName">
+                        </div>
+
+                        <!-- Price Range -->
+                        <div class="col-md-2">
+                            <input type="number" class="form-control" placeholder="Min Price" name="minPrice" value="@ViewBag.MinPrice">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" class="form-control" placeholder="Max Price" name="maxPrice" value="@ViewBag.MaxPrice">
+                        </div>
+
+                        <!-- Category -->
+                        <div class="col-md-2">
+                            <select name="categoryId" class="form-control">
+                                <option>--Select Category--</option>
+                                @foreach (var item in ViewBag.Categories)
+                                {
+                                    @if (ViewBag.CategoryId == item.Id)
+                                    {
+                                        <option value="@item.Id" selected>@item.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Cinema -->
+                        <div class="col-md-2">
+                            <select name="CinemaId" class="form-control">
+                                <option>--Select Cinema--</option>
+                                @foreach (var item in ViewBag.Cinemas)
+                                {
+                                    @if (ViewBag.CenimaId == item.Id)
+                                    {
+                                        <option value="@item.Id" selected>@item.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Low Quantity Movie Checkbox -->
+                        <div class="col-md-1">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="lessQuantity" value="true" @(ViewBag.LessQuantity is not null && ViewBag.LessQuantity ? "checked" : "")>
+                                <label class="form-check-label">Low Quantity</label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-md-2 my-2">
+                            <button type="submit" class="btn btn-dark w-100">Filter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row mb-3 align-items-center my-3">
+        <div class="col-md-6">
+            <h2 class="display-6">All Movies</h2>
+        </div>
+        <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
+            <a href="/Admin/Movie/Create" class="btn btn-success">Add Movie</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Category Name</th>
+                        <th scope="col">Cinema Name</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">@item.Id</th>
+                          <div class="container"> 
+
+                            <td><span class="badge text-bg-primary">Movie Name</span></td>
+
+                            <td>@item.Name</td>
+                          </div>
+            <div class="container">
+
+                <td><span class="badge text-bg-primary">Price</span></td>
+
+                            <td>@item.Price.ToString("c")</td>
+                            </div>
+            <div class="container">
+
+                @if (item.Quantity > discount)
+                            {
+                                <td>@item.Quantity</td>
+                            }
+                            else
+                            {
+                                <td><span class="badge text-bg-danger">@item.Quantity</span></td>
+                            }
+                            </div>
+                <div class="container">
+
+                    <td><span class="badge text-bg-primary">Status</span></td>
+
+                            @if (item.Status)
+                            {
+                                <td><span class="badge text-bg-success">Active</span></td>
+                            }
+                            else
+                            {
+                                <td><span class="badge text-bg-danger">In Active</span></td>
+                            }
+                            </div>
+            <div class="container">
+
+                <td><span class="badge text-bg-primary">Category Name</span></td>
+                            <td><span class="badge text-bg-primary">@item.Category.Name</span></td>
+</div>
+                <div class="container">
+
+                    <td><span class="badge text-bg-primary">Cinema Name </span></td>
+                            <td><span class="badge text-bg-primary">@item.Cinema.Name</span></td>
+                            </div>
+
+                            <td>
+                                <a href="/Admin/Movie/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
+                                <a href="/Admin/Movie/Delete/@item.Id" class="btn btn-danger btn-delete">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    @if (ViewBag.currentPage > 1 && ViewBag.currentPage <= ViewBag.totalNumberOfPages)
+                    {
+                    <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@(ViewBag.currentPage - 1)&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&CinemaId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">Previous</a></li>
+                    }
+
+                    @for (var i = 1; i <= ViewBag.totalNumberOfPages; i++)
+                    {
+                    <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@i&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&CinemaId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">@i</a></li>
+                    }
+
+                    @if (ViewBag.currentPage < ViewBag.totalNumberOfPages)
+                    {
+                    <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@(ViewBag.currentPage + 1)&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&brandId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">Next</a></li>
+                    }
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <img src="~/Images/@item.MainImg" class="card-img-top" alt="...">
+
+                <th scope="row">@item.Id</th>
+                <div class="container">
+
+                <td><span class="badge text-bg-primary">Movie Name</span></td>
+
+                <td>@item.Name</td>
+        </div>
+        <div class="container">
+
+            <td><span class="badge text-bg-primary">Price</span></td>
+
+            <td>@item.Price.ToString("c")</td>
+        </div>
+        <div class="container">
+
+            @if (item.Quantity > discount)
+            {
+                <td>@item.Quantity</td>
+            }
+            else
+            {
+                <td><span class="badge text-bg-danger">@item.Quantity</span></td>
+            }
+        </div>
+        <div class="container">
+
+            <td><span class="badge text-bg-primary">Status</span></td>
+
+            @if (item.Status)
+            {
+                <td><span class="badge text-bg-success">Active</span></td>
+            }
+            else
+            {
+                <td><span class="badge text-bg-danger">In Active</span></td>
+            }
+        </div>
+        <div class="container">
+
+            <td><span class="badge text-bg-primary">Category Name</span></td>
+            <td><span class="badge text-bg-primary">@item.Category.Name</span></td>
+        </div>
+        <div class="container">
+
+            <td><span class="badge text-bg-primary">Cinema Name </span></td>
+            <td><span class="badge text-bg-primary">@item.Cinema.Name</span></td>
+        </div>  <td><span class="badge text-bg-primary">@item.Description</span></td>
+        <div class="container">
+
+                <td>
+                    <a href="/Admin/Movie/Edit/@item.Id" type="button" class="btn btn-warning">Book the Movie</a>
+                </td>
+                </div>
+            </tr>
+        }
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".btn-delete");
+
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", function (e) {
+                e.preventDefault(); // stop normal navigation
+
+                const url = this.getAttribute("href");
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "This action cannot be undone!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                          title: "Deleted!",
+                          text: "Your file has been deleted.",
+                          icon: "success"
+                        });
+
+                        // Redirect to delete URL
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    });
+</script>
