@@ -14,5 +14,7 @@ namespace CinemaProject.Models
         public string? Description { get; set; }
 
         public bool Status { get; set; } = true;
+        public ICollection<ActorCategory> ActorCategories { get; set; } = new List<ActorCategory>();
+
     }
 }

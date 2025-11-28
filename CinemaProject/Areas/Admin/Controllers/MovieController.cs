@@ -237,7 +237,8 @@ namespace CinemaProject.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Delete(int id)
+        [HttpPost]
+                public async Task<IActionResult> Delete(int id)
         {
             var movie = await _movieRepository.GetOneAsync(e => e.Id == id);
 

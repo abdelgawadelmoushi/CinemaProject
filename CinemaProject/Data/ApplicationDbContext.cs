@@ -10,6 +10,7 @@ namespace CinemaProject.Data
         public DbSet<Actor> Actors { get; set; }
         public DbSet<movieColor> movieColors { get; set; }
         public DbSet<MovieSubImages> MovieSubImages { get; set; }
+        public DbSet<ActorMovie> ActorMovies { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

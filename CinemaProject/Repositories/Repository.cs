@@ -20,6 +20,13 @@ namespace CinemaProject.Repositories
         {
             await _dbSet.AddAsync(entity, cancellationToken);
         }
+        public async Task<int> CountAsync(Expression<Func<T, bool>>? predicate = null)
+        {
+            if (predicate is null)
+                return await _dbSet.CountAsync();
+
+            return await _dbSet.CountAsync(predicate);
+        }
 
         public void Update(T entity)
         {

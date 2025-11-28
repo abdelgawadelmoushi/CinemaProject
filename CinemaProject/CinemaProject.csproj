@@ -25,6 +25,7 @@
 		<Folder Include="Areas\Identity\Views\" />
 		<Folder Include="wwwroot\assets\customer\" />
 		<Folder Include="wwwroot\css\customer\" />
+		<Folder Include="wwwroot\Images\Actor_Images\" />
 		<Folder Include="wwwroot\img\cinema_Images\" />
 		<Folder Include="wwwroot\js\customer\" />
 		<Folder Include="wwwroot\scss\customer\" />

@@ -101,6 +101,7 @@
                         <th scope="col">Quantity</th>
                         <th scope="col">Status</th>
                         <th scope="col">Category Name</th>
+                        <th scope="col">Actor Name</th>
                         <th scope="col">Cinema Name</th>
                         <th scope="col">Actions</th>
                     </tr>
@@ -110,21 +111,19 @@
                     {
                         <tr>
                             <th scope="row">@item.Id</th>
-                          <div class="container"> 
 
-                            <td><span class="badge text-bg-primary">Movie Name</span></td>
 
+                            @*                             <td><span class="badge text-bg-primary">Movie Name</span></td>
+ *@
                             <td>@item.Name</td>
-                          </div>
-            <div class="container">
 
-                <td><span class="badge text-bg-primary">Price</span></td>
 
+                            @*                 <td><span class="badge text-bg-primary">Price</span></td>
+ *@
                             <td>@item.Price.ToString("c")</td>
-                            </div>
-            <div class="container">
 
-                @if (item.Quantity > discount)
+
+                            @if (item.Quantity > discount)
                             {
                                 <td>@item.Quantity</td>
                             }
@@ -132,37 +131,39 @@
                             {
                                 <td><span class="badge text-bg-danger">@item.Quantity</span></td>
                             }
-                            </div>
-                <div class="container">
 
-                    <td><span class="badge text-bg-primary">Status</span></td>
 
-                            @if (item.Status)
+                            @*                     <td><span class="badge text-bg-primary">Status</span></td>
+ *@                            @if (item.Status)
                             {
                                 <td><span class="badge text-bg-success">Active</span></td>
                             }
-                            else
+                                                else
                             {
                                 <td><span class="badge text-bg-danger">In Active</span></td>
                             }
-                            </div>
-            <div class="container">
 
-                <td><span class="badge text-bg-primary">Category Name</span></td>
-                            <td><span class="badge text-bg-primary">@item.Category.Name</span></td>
-</div>
-                <div class="container">
+                        @*                 <td><span class="badge text-bg-primary">Category Name</span></td>
+ *@                            <td><span class="badge text-bg-primary">@item.Category.Name</span></td>
 
-                    <td><span class="badge text-bg-primary">Cinema Name </span></td>
-                            <td><span class="badge text-bg-primary">@item.Cinema.Name</span></td>
-                            </div>
+                        <td>
+                            <span class="badge text-bg-primary">
+                                @(item.Actors != null && item.Actors.Any()
+                                                                ? string.Join(", ", item.Actors.Select(a => a.Name))
+                                                                : "No Actors")
+                            </span>
+                        </td>
+
+                            @*                     <td><span class="badge text-bg-primary">Cinema Name </span></td>
+ *@                            <td><span class="badge text-bg-primary">@item.Cinema.Name</span></td>
+
 
                             <td>
                                 <a href="/Admin/Movie/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
                                 <a href="/Admin/Movie/Delete/@item.Id" class="btn btn-danger btn-delete">Delete</a>
                             </td>
                         </tr>
-                    }
+                                        }
                 </tbody>
             </table>
         </div>
@@ -174,19 +175,19 @@
                 <ul class="pagination justify-content-center">
                     @if (ViewBag.currentPage > 1 && ViewBag.currentPage <= ViewBag.totalNumberOfPages)
                     {
-                    <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@(ViewBag.currentPage - 1)&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&CinemaId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@(ViewBag.currentPage - 1)&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&CinemaId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">Previous</a></li>
                     }
 
                     @for (var i = 1; i <= ViewBag.totalNumberOfPages; i++)
                     {
-                    <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@i&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&CinemaId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">@i</a></li>
+                        <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@i&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&CinemaId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">@i</a></li>
                     }
 
                     @if (ViewBag.currentPage < ViewBag.totalNumberOfPages)
                     {
-                    <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@(ViewBag.currentPage + 1)&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&brandId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">Next</a></li>
+                        <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@(ViewBag.currentPage + 1)&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&brandId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">Next</a></li>
                     }
-                    
+
                 </ul>
             </nav>
         </div>
@@ -249,13 +250,13 @@
         </div>  <td><span class="badge text-bg-primary">@item.Description</span></td>
         <div class="container">
 
-                <td>
-                    <a href="/Admin/Movie/Edit/@item.Id" type="button" class="btn btn-warning">Book the Movie</a>
-                </td>
-                </div>
-            </tr>
-        }
-    </div>
+            <td>
+                <a href="/Admin/Movie/Edit/@item.Id" type="button" class="btn btn-warning">Book the Movie</a>
+            </td>
+        </div>
+        </tr>
+    }
+</div>
 </div>
 
 <script>
