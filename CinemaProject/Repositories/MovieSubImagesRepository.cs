@@ -1,10 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using CinemaProject.Repositories.IRepositories;
+using System.Threading.Tasks;
 
 namespace CinemaProject.Repositories
 {
-    public class MovieSubImagesRepository : Repository<MovieSubImages>
+    public class MovieSubImagesRepository : Repository<MovieSubImages>, IMovieSubImagesRepository
     {
-        private readonly ApplicationDbContext _context = new();
+
+        public MovieSubImagesRepository(ApplicationDbContext context) : base(context)
+        {
+        }
 
         public void RemoveRange(IEnumerable<MovieSubImages> items)
         {

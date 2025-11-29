@@ -1,53 +1,39 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CinemaProject.Repositories.IRepositories;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace CinemaProject.Repositories
 {
-    public class Repository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly ApplicationDbContext _context = new();
+        protected readonly ApplicationDbContext _context;
         private readonly DbSet<T> _dbSet;
 
-        public Repository()
+        public Repository(ApplicationDbContext context)
         {
+            _context = context;
             _dbSet = _context.Set<T>();
         }
-
-        // CRUD
 
         public async Task CreateAsync(T entity, CancellationToken cancellationToken = default)
         {
             await _dbSet.AddAsync(entity, cancellationToken);
         }
+
         public async Task<int> CountAsync(Expression<Func<T, bool>>? predicate = null)
         {
-            if (predicate is null)
-                return await _dbSet.CountAsync();
-
-            return await _dbSet.CountAsync(predicate);
+            return predicate == null ?
+                   await _dbSet.CountAsync() :
+                   await _dbSet.CountAsync(predicate);
         }
 
-        public void Update(T entity)
-        {
-            _dbSet.Update(entity);
-        }
+        public void Update(T entity) => _dbSet.Update(entity);
 
-        public void Delete(T entity)
-        {
-            _dbSet.Remove(entity);
-        }
+        public void Delete(T entity) => _dbSet.Remove(entity);
 
         public async Task CommitAsync(CancellationToken cancellationToken = default)
         {
-            try
-            {
-                await _context.SaveChangesAsync(cancellationToken);
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.StackTrace}");
-            }
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<T>> GetAsync(
@@ -56,21 +42,19 @@ namespace CinemaProject.Repositories
             bool tracked = true,
             CancellationToken cancellationToken = default)
         {
-            var entities = _dbSet.AsQueryable();
+            IQueryable<T> query = _dbSet;
 
-            if(expression is not null)
-                entities = entities.Where(expression);
+            if (expression != null)
+                query = query.Where(expression);
 
-            if(includes is not null)
-                foreach (var item in includes)
-                    entities = entities.Include(item);
+            if (includes != null)
+                foreach (var include in includes)
+                    query = query.Include(include);
 
             if (!tracked)
-                entities = entities.AsNoTracking();
+                query = query.AsNoTracking();
 
-            //entities = entities.Where(e => e.Status == true);
-
-            return await entities.ToListAsync(cancellationToken);
+            return await query.ToListAsync(cancellationToken);
         }
 
         public async Task<T?> GetOneAsync(
@@ -79,7 +63,18 @@ namespace CinemaProject.Repositories
             bool tracked = true,
             CancellationToken cancellationToken = default)
         {
-            return (await GetAsync(expression, includes, tracked, cancellationToken)).FirstOrDefault();
+            return (await GetAsync(expression, includes, tracked, cancellationToken))
+                   .FirstOrDefault();
+        }
+
+        public async Task AddRangeAsync(List<MovieSubImages> listOfNewMovieSubImages)
+        {
+            await _context.AddRangeAsync(listOfNewMovieSubImages);
+        }
+
+        public void RemoveRange(List<MovieSubImages> listOfMovieSubImages)
+        {
+            _context.RemoveRange(listOfMovieSubImages);
         }
     }
 }

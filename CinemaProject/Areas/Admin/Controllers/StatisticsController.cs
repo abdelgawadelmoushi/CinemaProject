@@ -8,12 +8,12 @@ namespace CinemaProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class StatisticsController : Controller
     {
-        ApplicationDbContext _context = new();
+        public readonly ApplicationDbContext _context;
 
-        //public StatisticsController(ApplicationDbContext context)
-        //{
-        //    _context = context;
-        //}
+        public StatisticsController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         public async Task<IActionResult> Index()
         {

@@ -1,8 +1,9 @@
 ﻿using CinemaProject.Models;
-using CinemaProject.Repositories;
+using CinemaProject.Repositories.IRepositories;
 using CinemaProject.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.Types;
 using System.Threading.Tasks;
 
 namespace CinemaProject.Areas.Admin.Controllers
@@ -11,10 +12,29 @@ namespace CinemaProject.Areas.Admin.Controllers
     public class MovieController : Controller
     {
         //ApplicationDbContext _context = new();
-        Repository<Movie> _movieRepository = new();
-        MovieSubImagesRepository _MovieSubImagesRepository = new();
-        Repository<Category> _categoryRepository = new();
-        Repository<Cinema> _cinemaRepository = new();
+        private readonly IRepository<MovieSubImages> _MovieSubImagesRepository;
+        private readonly IRepository<Actor> _actorRepository;
+        private readonly IRepository<Category> _categoryRepository;
+        private readonly IRepository<Cinema> _cinemaRepository;
+        private readonly IRepository<Movie> _movieRepository;
+
+        //دا الكنستراكتور اللي علي اساسه بتشوف سي شارب النوع اللي انت محتاجه كاوبجيكت
+        public MovieController(
+            IRepository<Actor> actorRepository,
+            IRepository<Category> categoryRepository,
+            IRepository<Cinema> cinemaRepository,
+            IRepository<MovieSubImages> MovieSubImagesRpository,
+            IRepository<Movie> MovieRpository
+
+            )
+
+        {
+            _actorRepository = actorRepository;
+            _categoryRepository = categoryRepository;
+            _cinemaRepository = cinemaRepository;
+            _MovieSubImagesRepository = MovieSubImagesRpository;
+            _movieRepository = MovieRpository;
+        }
 
         public async Task<IActionResult> Index(movieFilterVM movieFilterVM)
         {

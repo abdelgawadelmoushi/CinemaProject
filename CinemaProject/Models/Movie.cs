@@ -24,5 +24,8 @@
         public int CinemaId { get; set; }
         public Cinema Cinema { get; set; } = default!;
 
+        public ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();
+
+
     }
 }

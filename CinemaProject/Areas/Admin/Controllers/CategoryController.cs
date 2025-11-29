@@ -1,8 +1,5 @@
-﻿using CinemaProject.Repositories;
-using CinemaProject.Validations;
-using Microsoft.AspNetCore.Http;
+﻿using CinemaProject.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace CinemaProject.Areas.Admin.Controllers
@@ -10,19 +7,21 @@ namespace CinemaProject.Areas.Admin.Controllers
     [Area("Admin")]
     public class CategoryController : Controller
     {
-        //ApplicationDbContext _context = new();
-        Repository<Category> _categoryRepository = new();
+        private readonly IRepository<Category> _categoryRepository;
 
+        public CategoryController(IRepository<Category> categoryRepository)
+        {
+            _categoryRepository = categoryRepository;
+        }
 
+        // ================= Index =================
         public async Task<IActionResult> Index()
         {
             var categories = await _categoryRepository.GetAsync(tracked: false);
-
-            // Add Filter
-
-            return View(categories.AsEnumerable());
+            return View(categories);
         }
 
+        // ================= Create =================
         [HttpGet]
         public IActionResult Create()
         {
@@ -39,32 +38,20 @@ namespace CinemaProject.Areas.Admin.Controllers
                 return View(category);
             }
 
-            //CategoryValidator validationRules = new CategoryValidator();
-            //var result = validationRules.Validate(category);
-
-            //if (!result.IsValid)
-            //    return View(category);
-
             await _categoryRepository.CreateAsync(category);
             await _categoryRepository.CommitAsync();
 
-            //Response.Cookies.Append("success-notification", "Create Category Successfully", new()
-            //{
-            //    Expires = DateTime.UtcNow.AddMinutes(30),
-            //});
-            //HttpContext.Session.SetString("success-notification", "Create Category Successfully");
-
-            TempData["success-notification"] = "Create Category Successfully";
+            TempData["success-notification"] = "Category Created Successfully";
 
             return RedirectToAction(nameof(Index));
         }
 
+        // ================= Edit =================
         [HttpGet]
-        public async Task<IActionResult> Edit([FromRoute] int id)
+        public async Task<IActionResult> Edit(int id)
         {
             var category = await _categoryRepository.GetOneAsync(e => e.Id == id);
-
-            if (category is null)
+            if (category == null)
                 return RedirectToAction(nameof(HomeController.NotFoundPage), "Home");
 
             return View(category);
@@ -83,25 +70,22 @@ namespace CinemaProject.Areas.Admin.Controllers
             _categoryRepository.Update(category);
             await _categoryRepository.CommitAsync();
 
-            //Response.Cookies.Append("success-notification", "Update Category Successfully");
-            TempData["success-notification"] = "Update Category Successfully";
+            TempData["success-notification"] = "Category Updated Successfully";
 
             return RedirectToAction(nameof(Index));
         }
 
+        // ================= Delete =================
         public async Task<IActionResult> Delete(int id)
         {
             var category = await _categoryRepository.GetOneAsync(e => e.Id == id);
-
-            if (category is null)
+            if (category == null)
                 return RedirectToAction(nameof(HomeController.NotFoundPage), "Home");
 
             _categoryRepository.Delete(category);
             await _categoryRepository.CommitAsync();
 
-            //Response.Cookies.Append("success-notification", "Delete Category Successfully");
-            TempData["success-notification"] = "Delete Category Successfully";
-
+            TempData["success-notification"] = "Category Deleted Successfully";
 
             return RedirectToAction(nameof(Index));
         }
