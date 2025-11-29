@@ -237,19 +237,6 @@ namespace CinemaProject.Migrations
                     b.ToTable("MovieSubImages");
                 });
 
-            modelBuilder.Entity("CinemaProject.Models.movieColor", b =>
-                {
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("MovieId", "Color");
-
-                    b.ToTable("movieColors");
-                });
-
             modelBuilder.Entity("CinemaProject.Models.Actor", b =>
                 {
                     b.HasOne("CinemaProject.Models.Movie", null)
@@ -298,13 +285,13 @@ namespace CinemaProject.Migrations
             modelBuilder.Entity("CinemaProject.Models.ActorMovie", b =>
                 {
                     b.HasOne("CinemaProject.Models.Actor", "Actor")
-                        .WithMany()
+                        .WithMany("ActorMovies")
                         .HasForeignKey("ActorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CinemaProject.Models.Movie", "Movie")
-                        .WithMany()
+                        .WithMany("ActorMovies")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -344,22 +331,13 @@ namespace CinemaProject.Migrations
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("CinemaProject.Models.movieColor", b =>
-                {
-                    b.HasOne("CinemaProject.Models.Movie", "Movie")
-                        .WithMany()
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Movie");
-                });
-
             modelBuilder.Entity("CinemaProject.Models.Actor", b =>
                 {
                     b.Navigation("ActorCategories");
 
                     b.Navigation("ActorCinema");
+
+                    b.Navigation("ActorMovies");
                 });
 
             modelBuilder.Entity("CinemaProject.Models.Category", b =>
@@ -374,6 +352,8 @@ namespace CinemaProject.Migrations
 
             modelBuilder.Entity("CinemaProject.Models.Movie", b =>
                 {
+                    b.Navigation("ActorMovies");
+
                     b.Navigation("Actors");
                 });
 #pragma warning restore 612, 618

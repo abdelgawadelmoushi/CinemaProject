@@ -54,7 +54,7 @@
                     </td>
                     <td>
                         <a href="/Admin/Actor/Edit/@actor.Id" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="/Admin/Actor/Delete/@actor.Id" class="btn btn-danger btn-sm btn-delete">Delete</a>
+                        <a asp-action="Delete" asp-route-id="@actor.Id" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             }

@@ -7,7 +7,11 @@ namespace CinemaProject.Data.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<MovieSubImages> builder)
         {
-            builder.HasKey(e => new { e.MovieId, e.Img });
+            builder
+                .HasOne(msi => msi.Movie)
+                .WithMany(m => m.MovieSubImages)
+                .HasForeignKey(msi => msi.MovieId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

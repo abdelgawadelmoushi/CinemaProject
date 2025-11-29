@@ -1,23 +1,23 @@
-﻿using CinemaProject.Repositories.IRepositories;
-using System.Threading.Tasks;
+﻿using CinemaProject.Models;
+using CinemaProject.Repositories;
+using CinemaProject.Repositories.IRepositories;
 
-namespace CinemaProject.Repositories
+public class MovieSubImagesRepository : Repository<MovieSubImages>, IMovieSubImagesRepository
 {
-    public class MovieSubImagesRepository : Repository<MovieSubImages>, IMovieSubImagesRepository
+    protected readonly ApplicationDbContext _context;
+
+    public MovieSubImagesRepository(ApplicationDbContext context) : base(context)
     {
+        _context = context;
+    }
 
-        public MovieSubImagesRepository(ApplicationDbContext context) : base(context)
-        {
-        }
+    public void RemoveRange(IEnumerable<MovieSubImages> items)
+    {
+        _context.MovieSubImages.RemoveRange(items);
+    }
 
-        public void RemoveRange(IEnumerable<MovieSubImages> items)
-        {
-            _context.MovieSubImages.RemoveRange(items);
-        }
-
-        public async Task AddRangeAsync(IEnumerable<MovieSubImages> items, CancellationToken cancellationToken = default)
-        {
-            await _context.AddAsync(items, cancellationToken);
-        }
+    public async Task AddRangeAsync(IEnumerable<MovieSubImages> items, CancellationToken cancellationToken = default)
+    {
+        await _context.MovieSubImages.AddRangeAsync(items, cancellationToken);
     }
 }

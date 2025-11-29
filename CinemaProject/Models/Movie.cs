@@ -14,18 +14,19 @@
         public double Rate { get; set; }
 
         public bool Status { get; set; } = true;
+        public List<MovieSubImages> MovieSubImages { get; set; } = [];
 
         public List<Actor> Actors { get; set; } = [];
 
         public int CategoryId { get; set; }
         public Category Category { get; set; } = default!;
 
-        
+
         public int CinemaId { get; set; }
         public Cinema Cinema { get; set; } = default!;
 
         public ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();
 
-
     }
 }
+

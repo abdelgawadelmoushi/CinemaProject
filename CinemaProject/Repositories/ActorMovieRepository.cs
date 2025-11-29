@@ -1,14 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace CinemaProject.Repositories.IRepositories
 {
     public class ActorMovieRepository : Repository<ActorMovie> , IActorMovieRepository
     {
-
-
+        protected readonly ApplicationDbContext _context;
 
         public ActorMovieRepository(ApplicationDbContext context) : base(context)
         {
+            _context = context;
         }
 
         public void RemoveRange(IEnumerable<ActorMovie> items)

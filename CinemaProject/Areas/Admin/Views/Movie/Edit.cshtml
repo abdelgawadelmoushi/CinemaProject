@@ -3,127 +3,117 @@
 <div class="container">
     <div class="row mb-3 align-items-center my-3">
         <div class="col-md-6">
-            <h2 class="display-6">Edit Movies</h2>
+            <h2 class="display-6">Edit Movie</h2>
         </div>
     </div>
 
     <div class="row my-3">
         <div class="col-12">
-            <form method="post" enctype="multipart/form-data">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" />
+
+                <!-- Name -->
                 <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input class="form-control" name="name" value="@Model.Name">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
                 </div>
 
+                <!-- Main Image -->
                 <div class="mb-3">
-                    <label for="Img" class="form-label">Img</label>
-                    <input type="file" class="form-control" id="Img" name="Img" accept="image/*" onchange="previewImage(event)">
+                    <label asp-for="MainImg" class="form-label">Main Image</label>
+                    <input type="file" asp-for="MainImg" class="form-control" accept="image/*" onchange="previewMainImage(event)" />
                 </div>
-
                 <div class="mb-3">
-                    <img id="preview"
-                         src="~/images/product_images/@Model.MainImg"
+                    <img id="mainPreview"
+                         src="~/images/movie_images/@Model.MainImg"
                          alt="Current Image"
                          style="max-width: 200px; border:1px solid #ccc; padding:5px; border-radius:10px;" />
                 </div>
 
+                <!-- Sub Images -->
                 <div class="mb-3">
-                    <label for="SubImgs" class="form-label">Sub Imgs</label>
-                    <input type="file" class="form-control" name="SubImgs" multiple>
+                    <label class="form-label">Sub Images</label>
+                    <input type="file" name="SubImgs" class="form-control" multiple />
                 </div>
-
                 <div class="mb-3">
-                    @foreach (var item in ViewBag.MovieSubImages)
+                    @if (ViewBag.MovieSubImages != null)
                     {
-                        <img id="preview"
-                             src="~/images/product_images/product_sub_images/@item.Img"
-                             alt="Current Image"
-                             style="max-width: 200px; border:1px solid #ccc; padding:5px; border-radius:10px;" />
+                        foreach (var item in ViewBag.MovieSubImages)
+                        {
+                            <img src="~/images/movie_images/movie_sub_images/@item.Img"
+                                 alt="Sub Image"
+                                 style="max-width: 200px; border:1px solid #ccc; padding:5px; border-radius:10px; margin-right:5px;" />
+                        }
                     }
                 </div>
 
+                <!-- Description -->
                 <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave a description here" style="height: 100px" name="description">@Model.Description</textarea>
-                        <label for="description">You Description Here...</label>
-                    </div>
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                </div>
+
+                <!-- Price, Discount, Quantity -->
+                <div class="mb-3">
+                    <label asp-for="Price" class="form-label"></label>
+                    <input asp-for="Price" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label for="Price" class="form-label">Price</label>
-                    <input type="number" class="form-control" name="Price" value="@Model.Price">
+                    <label asp-for="Discount" class="form-label"></label>
+                    <input asp-for="Discount" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label for="Discount" class="form-label">Discount</label>
-                    <input type="number" class="form-control" name="Discount" value="@Model.Discount">
+                    <label asp-for="Quantity" class="form-label"></label>
+                    <input asp-for="Quantity" class="form-control" />
                 </div>
+
+                <!-- Status -->
+                @Html.DropDownListFor(m => m.Status,
+                new List<SelectListItem>
+                                {
+                                new SelectListItem { Text = "Active", Value = "true", Selected = Model.Status },
+                                new SelectListItem { Text = "Inactive", Value = "false", Selected = !Model.Status }
+                                },
+                                new { @class = "form-select" })
+
+                <!-- Category -->
                 <div class="mb-3">
-                    <label for="Quantity" class="form-label">Quantity</label>
-                    <input type="number" class="form-control" name="Quantity"
-                           value="@Model.Quantity">
-                </div>
-                <div class="mb-3">
-                    <label for="status" class="form-label">Status</label>
-                    <select name="status" class="form-select">
-                        @if (Model.Status)
-                        {
-                            <option value="true" selected>Active</option>
-                            <option value="false">InActive</option>
-                        }
-                        else
-                        {
-                            <option value="true">Active</option>
-                            <option value="false" selected>InActive</option>
-                        }
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="CategoryId" class="form-label">Category</label>
-                    <select name="CategoryId" class="form-select">
+                    <label asp-for="CategoryId" class="form-label"></label>
+                    <select asp-for="CategoryId" class="form-select">
                         @foreach (var item in ViewBag.Categories)
                         {
-                            @if (Model.CategoryId == item.Id)
-                            {
-                                <option value="@item.Id" selected>@item.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
+                            <option value="@item.Id" selected="@(Model.CategoryId == item.Id ? "selected" : null)">@item.Name</option>
                         }
                     </select>
                 </div>
+
+                <!-- Cinema -->
                 <div class="mb-3">
-                    <label for="CenimaId" class="form-label">Cinema</label>
-                    <select name="CenimaId" class="form-select">
+                    <label asp-for="CinemaId" class="form-label"></label>
+                    <select asp-for="CinemaId" class="form-select">
                         @foreach (var item in ViewBag.Cinemas)
                         {
-                            @if (Model.CinemaId == item.Id)
-                            {
-                                <option value="@item.Id" selected>@item.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
+                            <option value="@item.Id" selected="@(Model.CinemaId == item.Id ? "selected" : null)">@item.Name</option>
                         }
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>
 </div>
 
 <script>
-    function previewImage(event) {
+    function previewMainImage(event) {
         const input = event.target;
-        const preview = document.getElementById("preview");
+        const preview = document.getElementById("mainPreview");
 
         if (input.files && input.files[0]) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                preview.src = e.target.result; // الصورة الجديدة
+                preview.src = e.target.result;
             }
             reader.readAsDataURL(input.files[0]);
         }

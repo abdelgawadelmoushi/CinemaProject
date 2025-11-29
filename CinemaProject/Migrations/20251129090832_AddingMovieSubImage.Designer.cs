@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251127140926_inicialCreation")]
-    partial class inicialCreation
+    [Migration("20251129090832_AddingMovieSubImage")]
+    partial class AddingMovieSubImage
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,6 +56,52 @@ namespace CinemaProject.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("Actors");
+                });
+
+            modelBuilder.Entity("CinemaProject.Models.ActorCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ActorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActorId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ActorCategory");
+                });
+
+            modelBuilder.Entity("CinemaProject.Models.ActorCinema", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ActorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CinemaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActorId");
+
+                    b.HasIndex("CinemaId");
+
+                    b.ToTable("ActorCinema");
                 });
 
             modelBuilder.Entity("CinemaProject.Models.ActorMovie", b =>
@@ -194,19 +240,6 @@ namespace CinemaProject.Migrations
                     b.ToTable("MovieSubImages");
                 });
 
-            modelBuilder.Entity("CinemaProject.Models.movieColor", b =>
-                {
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("MovieId", "Color");
-
-                    b.ToTable("movieColors");
-                });
-
             modelBuilder.Entity("CinemaProject.Models.Actor", b =>
                 {
                     b.HasOne("CinemaProject.Models.Movie", null)
@@ -214,16 +247,54 @@ namespace CinemaProject.Migrations
                         .HasForeignKey("MovieId");
                 });
 
+            modelBuilder.Entity("CinemaProject.Models.ActorCategory", b =>
+                {
+                    b.HasOne("CinemaProject.Models.Actor", "Actor")
+                        .WithMany("ActorCategories")
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CinemaProject.Models.Category", "Category")
+                        .WithMany("ActorCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("CinemaProject.Models.ActorCinema", b =>
+                {
+                    b.HasOne("CinemaProject.Models.Actor", "Actor")
+                        .WithMany("ActorCinema")
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CinemaProject.Models.Cinema", "Cinema")
+                        .WithMany("ActorCinema")
+                        .HasForeignKey("CinemaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("Cinema");
+                });
+
             modelBuilder.Entity("CinemaProject.Models.ActorMovie", b =>
                 {
                     b.HasOne("CinemaProject.Models.Actor", "Actor")
-                        .WithMany()
+                        .WithMany("ActorMovies")
                         .HasForeignKey("ActorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CinemaProject.Models.Movie", "Movie")
-                        .WithMany()
+                        .WithMany("ActorMovies")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -263,19 +334,29 @@ namespace CinemaProject.Migrations
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("CinemaProject.Models.movieColor", b =>
+            modelBuilder.Entity("CinemaProject.Models.Actor", b =>
                 {
-                    b.HasOne("CinemaProject.Models.Movie", "Movie")
-                        .WithMany()
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ActorCategories");
 
-                    b.Navigation("Movie");
+                    b.Navigation("ActorCinema");
+
+                    b.Navigation("ActorMovies");
+                });
+
+            modelBuilder.Entity("CinemaProject.Models.Category", b =>
+                {
+                    b.Navigation("ActorCategories");
+                });
+
+            modelBuilder.Entity("CinemaProject.Models.Cinema", b =>
+                {
+                    b.Navigation("ActorCinema");
                 });
 
             modelBuilder.Entity("CinemaProject.Models.Movie", b =>
                 {
+                    b.Navigation("ActorMovies");
+
                     b.Navigation("Actors");
                 });
 #pragma warning restore 612, 618

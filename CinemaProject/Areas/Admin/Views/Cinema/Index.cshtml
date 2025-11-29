@@ -38,7 +38,7 @@
                             }
                             <td>
                                 <a href="/Admin/Cinema/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
-                                <a href="/Admin/Cinema/Delete/@item.Id" class="btn btn-danger btn-delete">Delete</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
                             </td>
                         </tr>
                     }

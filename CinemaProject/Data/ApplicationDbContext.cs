@@ -27,7 +27,7 @@ namespace CinemaProject.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EntityConfiguration.ActorMovieEntityTypeConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EntityConfigurations.ActorMovieEntityTypeConfiguration).Assembly);
         }
 
     }

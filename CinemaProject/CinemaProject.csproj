@@ -23,6 +23,7 @@
 		<Folder Include="Areas\ChatApp\Controllers\" />
 		<Folder Include="Areas\Identity\Controllers\" />
 		<Folder Include="Areas\Identity\Views\" />
+		<Folder Include="Migrations\" />
 		<Folder Include="wwwroot\assets\customer\" />
 		<Folder Include="wwwroot\css\customer\" />
 		<Folder Include="wwwroot\Images\Actor_Images\" />
