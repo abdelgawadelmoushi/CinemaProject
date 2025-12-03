@@ -9,6 +9,8 @@
 	<ItemGroup>
 		<PackageReference Include="EPPlus" Version="8.2.1" />
 		<PackageReference Include="FluentValidation" Version="12.1.0" />
+		<PackageReference Include="Mapster" Version="7.4.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />
@@ -21,8 +23,6 @@
 
 	<ItemGroup>
 		<Folder Include="Areas\ChatApp\Controllers\" />
-		<Folder Include="Areas\Identity\Controllers\" />
-		<Folder Include="Areas\Identity\Views\" />
 		<Folder Include="Migrations\" />
 		<Folder Include="wwwroot\assets\customer\" />
 		<Folder Include="wwwroot\css\customer\" />

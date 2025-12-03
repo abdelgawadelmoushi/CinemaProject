@@ -1,5 +1,6 @@
 using CinemaProject.Repositories;
 using CinemaProject.Repositories.IRepositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaProject
@@ -17,10 +18,26 @@ namespace CinemaProject
             //builder.Services.AddSession(opt => {
             //    opt.IdleTimeout = TimeSpan.FromSeconds(5);
             //});
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-              options.UseSqlServer("Data Source=.;Initial Catalog=CinemaProject;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False"));
+
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")?? throw new InvalidOperationException("ConnectionString" +
+                "Default Connection not found.");
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+
+
 
             //»‰ÿ·» „‰ ”Ì ‘«—»  ÷Ì›·‰« ‰ÿ«ﬁ ÃœÌœ «Ê· „«   ‘Ê› «·‰Ê⁄ «··Ì Ã«Ì·Â«  ÷Ì› «Ê»ÃÌﬂ  „‰ ‰›” «·‰Ê⁄
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric=false;
+
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IMovieSubImagesRepository, MovieSubImagesRepository>();
             builder.Services.AddScoped<IActorMovieRepository, ActorMovieRepository>();

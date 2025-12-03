@@ -193,70 +193,62 @@
         </div>
     </div>
 </div>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card" style="width: 15rem;">
 
-<div class="card" style="width: 18rem;">
-    <div class="card-body">
-        @foreach (var item in Model)
-        {
-            <tr>
-                <img src="~/Images/@item.MainImg" class="card-img-top" alt="...">
+                <img src="~/Images/movie_images/@item.MainImg" class="card-img-top" alt="">
 
-                <th scope="row">@item.Id</th>
-                <div class="container">
+                <div class="card-body">
 
-                <td><span class="badge text-bg-primary">Movie Name</span></td>
+                    <p><span class="badge text-bg-primary">Movie Name</span> @item.Name</p>
 
-                <td>@item.Name</td>
+                    <p><span class="badge text-bg-primary">Price</span> @item.Price.ToString("c")</p>
+
+                    <p>
+                        <span class="badge text-bg-primary">Quantity</span>
+                        @if (item.Quantity > discount)
+                        {
+                            <span>@item.Quantity</span>
+                        }
+                        else
+                        {
+                            <span class="badge text-bg-danger">@item.Quantity</span>
+                        }
+                    </p>
+
+                    <p>
+                        <span class="badge text-bg-primary">Status</span>
+                        @if (item.Status)
+                        {
+                            <span class="badge text-bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge text-bg-danger">Inactive</span>
+                        }
+                    </p>
+
+                    <p>
+                        <span class="badge text-bg-primary">Category</span>
+                        <span class="badge text-bg-info">@item.Category.Name</span>
+                    </p>
+
+                    <p>
+                        <span class="badge text-bg-primary">Cinema</span>
+                        <span class="badge text-bg-info">@item.Cinema.Name</span>
+                    </p>
+
+                    <p><span class="badge text-bg-secondary">@item.Description</span></p>
+
+                    <a href="/Admin/Movie/Edit/@item.Id" class="btn btn-warning w-100 mt-2">Book the Movie</a>
+
+                </div>
+            </div>
         </div>
-        <div class="container">
-
-            <td><span class="badge text-bg-primary">Price</span></td>
-
-            <td>@item.Price.ToString("c")</td>
-        </div>
-        <div class="container">
-
-            @if (item.Quantity > discount)
-            {
-                <td>@item.Quantity</td>
-            }
-            else
-            {
-                <td><span class="badge text-bg-danger">@item.Quantity</span></td>
-            }
-        </div>
-        <div class="container">
-
-            <td><span class="badge text-bg-primary">Status</span></td>
-
-            @if (item.Status)
-            {
-                <td><span class="badge text-bg-success">Active</span></td>
-            }
-            else
-            {
-                <td><span class="badge text-bg-danger">In Active</span></td>
-            }
-        </div>
-        <div class="container">
-
-            <td><span class="badge text-bg-primary">Category Name</span></td>
-            <td><span class="badge text-bg-primary">@item.Category.Name</span></td>
-        </div>
-        <div class="container">
-
-            <td><span class="badge text-bg-primary">Cinema Name </span></td>
-            <td><span class="badge text-bg-primary">@item.Cinema.Name</span></td>
-        </div>  <td><span class="badge text-bg-primary">@item.Description</span></td>
-        <div class="container">
-
-            <td>
-                <a href="/Admin/Movie/Edit/@item.Id" type="button" class="btn btn-warning">Book the Movie</a>
-            </td>
-        </div>
-        </tr>
     }
-</div>
 </div>
 
 <script>

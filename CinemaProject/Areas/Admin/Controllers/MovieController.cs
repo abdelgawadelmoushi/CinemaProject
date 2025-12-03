@@ -169,9 +169,9 @@ namespace CinemaProject.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Movie model, IFormFile Img, List<IFormFile> SubImgs)
+        public async Task<IActionResult> Edit(Movie model, IFormFile MainImg, List<IFormFile> SubImgs)
         {
-            var movieInDb = await _movieRepository.GetOneAsync(e => e.Id == model.Id, tracked: true);
+            var movieInDb = await _movieRepository.GetOneAsync(e => e.Id == model.Id, tracked: false);
             if (movieInDb == null) return NotFound();
 
             movieInDb.Name = model.Name;
@@ -183,13 +183,13 @@ namespace CinemaProject.Areas.Admin.Controllers
             movieInDb.CategoryId = model.CategoryId;
             movieInDb.CinemaId = model.CinemaId;
 
-            if (Img != null)
+            if (MainImg != null)
             {
-                var fileName = Guid.NewGuid() + Path.GetExtension(Img.FileName);
+                var fileName = Guid.NewGuid() + Path.GetExtension(MainImg.FileName);
                 var filePath = Path.Combine("wwwroot/images/movie_images", fileName);
 
                 using var stream = System.IO.File.Create(filePath);
-                Img.CopyTo(stream);
+                MainImg.CopyTo(stream);
 
                 var oldPath = Path.Combine("wwwroot/images/movie_images", movieInDb.MainImg);
                 if (System.IO.File.Exists(oldPath))
@@ -230,6 +230,8 @@ namespace CinemaProject.Areas.Admin.Controllers
                 await _movieSubImagesRepository.AddRangeAsync(newSubImgs);
                 await _movieSubImagesRepository.CommitAsync();
             }
+
+            _movieRepository.Update(movieInDb);
 
             await _movieRepository.CommitAsync();
             return RedirectToAction(nameof(Index));
