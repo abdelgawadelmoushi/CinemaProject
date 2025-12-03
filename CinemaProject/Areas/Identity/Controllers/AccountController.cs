@@ -15,12 +15,12 @@ namespace CinemaProject.Areas.Identity.Controllers
         private readonly IEmailSender _emailSender;
 
         // to check eligiblity of signin
-        public AccountController(UserManager<ApplicationUser> userManager , SignInManager<ApplicationUser> signInManager 
-            ,IEmailSender emailSender)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager
+            , IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-           _emailSender = emailSender;
+            _emailSender = emailSender;
         }
 
 
@@ -54,11 +54,11 @@ namespace CinemaProject.Areas.Identity.Controllers
                 }
             // for sending confirmation email
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var Link = Url.Action(nameof(Confirm),"Account" ,
-                new { area = "Identity", token = token , userId = user.Id } ,Request.Scheme);
+            var Link = Url.Action(nameof(Confirm), "Account",
+                new { area = "Identity", token = token, userId = user.Id }, Request.Scheme);
 
 
-            _emailSender.SendEmailAsync(registerVM.Email , "CinemaProject - Confirm You Email",
+         await   _emailSender.SendEmailAsync(registerVM.Email, "CinemaProject - Confirm Your Email",
                 $"<h1> Please Confirm your Email by clicking  <a href=' {Link} '>Here</a></h1>"
                 );
 
@@ -66,17 +66,17 @@ namespace CinemaProject.Areas.Identity.Controllers
 
             return RedirectToAction("Login");
 
-           
+
         }
 
-        public async Task<IActionResult> Confirm(string token , string userId)
+        public async Task<IActionResult> Confirm(string token, string userId)
         {
             // to find the user in DB
             var user = await _userManager.FindByIdAsync(userId);
             if (user is null) return NotFound();
 
             //validate the  Email
-            var result = await _userManager.ConfirmEmailAsync(user , token);
+            var result = await _userManager.ConfirmEmailAsync(user, token);
             if (!result.Succeeded)
             {
                 TempData["error-notification"] = string.Join(", ", result.Errors.Select(e => e.Code));
@@ -123,7 +123,7 @@ namespace CinemaProject.Areas.Identity.Controllers
                     ModelState.AddModelError(string.Empty, "Invalid UserName / Email Or Password");
 
 
-             else if (result.IsLockedOut)
+                else if (result.IsLockedOut)
                 {
                     ModelState.AddModelError(string.Empty, "Too Many Attempts , please try again later");
                     TempData["error-notification"] = " Too Many Attempts , please try again later";
@@ -135,7 +135,55 @@ namespace CinemaProject.Areas.Identity.Controllers
 
             TempData["sucess-notification"] = "Successfully logged in";
 
-            return RedirectToAction("index", "Admin" , new {area = "Cinema"});
+            return RedirectToAction("index", "Admin", new { area = "Cinema" });
         }
+
+        [HttpGet]
+        public IActionResult ResendEmailConfirmation()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ResendEmailConfirmation(ResendEmailConfirmationVM resendEmailConfirmationVM)
+        {
+            if (!ModelState.IsValid) return View(resendEmailConfirmationVM);
+
+            var user = await _userManager.FindByEmailAsync(resendEmailConfirmationVM.EmailOrUserName) ?? await _userManager.FindByNameAsync(resendEmailConfirmationVM.EmailOrUserName);
+            if (user is null)
+
+            {
+                ModelState.AddModelError(string.Empty, "Invalid UserName / Emai");
+
+                TempData["error-notification"] = "Invalid UserName / Email ";
+                return View(resendEmailConfirmationVM);
+            }
+
+            if (user.EmailConfirmed)
+            {
+                ModelState.AddModelError(string.Empty, "Your Account Already Confirmed");
+
+                TempData["error-notification"] = "Your Account Already Confirmed ";
+                return View(resendEmailConfirmationVM);
+
+            }
+
+            // for sending confirmation email
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var Link = Url.Action(nameof(Confirm), "Account",
+                new { area = "Identity", token = token, userId = user.Id }, Request.Scheme);
+
+
+          await  _emailSender.SendEmailAsync(user.Email!, "CinemaProject - Resend Your Email",
+                $"<h1> Please Confirm your Email by clicking  <a href=' {Link} '>Here</a></h1>"
+                );
+
+            TempData["success-notification"] = " Email sent Successfully , please Confirm your Email";
+
+            return RedirectToAction("index", "Admin", new { area = "Cinema" });
+
+
+        }
+
     }
-}
+
+    }

@@ -6,13 +6,13 @@
     {
         <script>
 
-            toaster.success(@TempData["success-notification"])
+            toastr.success(@TempData["success-notification"])
         </script>
     }
     else if (@TempData["error-notification"] is not null)
       {
         <script>
-            toaster.success(@TempData["error-notification"])
+            toastr.error(@TempData["error-notification"])
         </script>
     }
 </div>

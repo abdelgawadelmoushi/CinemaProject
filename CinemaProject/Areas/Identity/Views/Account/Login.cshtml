@@ -37,59 +37,49 @@
     <div>
         <a asp-action="Register">Register</a>
     </div>
-</div>
+     <div>
+        <a asp-action="ResendEmailConfirmation">Resend Email Confirmation</a>
+    </div>
 </div>
 
 @section Scripts {
-    <partial Name = "_NotificationPartial"/>;
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    @if (@TempData["success-notification"] is not null)
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+    </script>
+
+    @if (TempData["success-notification"] is not null)
     {
         <script>
-
-                        toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            };
-                        toastr.success('@TempData["success-notification"]')
-
+            toastr.success('@TempData["success-notification"]');
         </script>
     }
     else if (TempData["error-notification"] is not null)
     {
         <script>
-
-                        toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            };
-                toastr.success('@TempData["error-notification"]')
+            toastr.error('@TempData["error-notification"]');
         </script>
     }
 }
+
+    
+
