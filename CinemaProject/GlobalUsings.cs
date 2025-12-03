@@ -1,3 +1,8 @@
 ﻿global using CinemaProject.Data;
 global using CinemaProject.Models;
 global using CinemaProject.Data.EntityConfigurations;
+global using Microsoft.AspNetCore.Identity.UI.Services;
+global using CinemaProject.Repositories;
+global using CinemaProject.Repositories.IRepositories;
+global using CinemaProject.Utilities;
+global using Microsoft.AspNetCore.Identity;

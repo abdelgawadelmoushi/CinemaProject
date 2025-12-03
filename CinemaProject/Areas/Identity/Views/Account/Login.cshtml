@@ -1,0 +1,95 @@
+﻿@model CinemaProject.ViewModels.LoginVM
+
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="container">
+         <h1>Login</h1>
+
+    <h4>LoginVM</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Login">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="EmailOrUserName" class="control-label"></label>
+                    <input asp-for="EmailOrUserName" class="form-control" />
+                    <span asp-validation-for="EmailOrUserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
+                    </label>
+                </div>
+                <div class="form-group mt-3">
+                    <input type="submit" value="Login" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Register">Register</a>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+    <partial Name = "_NotificationPartial"/>;
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @if (@TempData["success-notification"] is not null)
+    {
+        <script>
+
+                        toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+                        toastr.success('@TempData["success-notification"]')
+
+        </script>
+    }
+    else if (TempData["error-notification"] is not null)
+    {
+        <script>
+
+                        toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+                toastr.success('@TempData["error-notification"]')
+        </script>
+    }
+}
