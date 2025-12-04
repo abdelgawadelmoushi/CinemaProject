@@ -47,6 +47,39 @@
         </div>
     </div>
 </div>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card" style="width: 15rem;">
+
+                <img src="~/Images/movie_images/@item.Img" class="card-img-top" alt="">
+
+                <div class="card-body">
+
+                    <p><span class="badge text-bg-primary">Movie Name</span> @item.Name</p>
+
+
+                    <p>
+                        <span class="badge text-bg-primary">Status</span>
+                        @if (item.Status)
+                        {
+                            <span class="badge text-bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge text-bg-danger">Inactive</span>
+                        }
+                    </p>
+
+                    <p><span class="badge text-bg-secondary">@item.Description</span></p>
+
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
 
 <script>

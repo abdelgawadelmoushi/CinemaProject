@@ -16,6 +16,7 @@ namespace CinemaProject.Data
         public DbSet<Actor> Actors { get; set; }
         public DbSet<MovieSubImages> MovieSubImages { get; set; }
         public DbSet<ActorMovie> ActorMovies { get; set; }
+        public DbSet<ApplicationUserOTP> ApplicationUserOTPs { get; set; }
 
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -31,6 +32,7 @@ namespace CinemaProject.Data
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(EntityConfigurations.ActorMovieEntityTypeConfiguration).Assembly);
         }
+        public DbSet<CinemaProject.ViewModels.ResetPasswordVM> ResetPasswordVM { get; set; } = default!;
 
     }
 }

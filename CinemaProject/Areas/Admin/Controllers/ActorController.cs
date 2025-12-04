@@ -164,5 +164,7 @@ namespace CinemaProject.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-    }
+
+            }
+
 }

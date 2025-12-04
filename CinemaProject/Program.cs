@@ -41,8 +41,11 @@ namespace CinemaProject
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-                
 
+            //instead of 
+            //builder.Services.AddScoped<IRepository<ApplicationUserOTP>, Repository<ApplicationUserOTP>>();
+            
+            // i used a geniric Repository as below 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IMovieSubImagesRepository, MovieSubImagesRepository>();
             builder.Services.AddScoped<IActorMovieRepository, ActorMovieRepository>();
