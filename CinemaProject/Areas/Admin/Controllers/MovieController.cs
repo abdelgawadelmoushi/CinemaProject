@@ -96,6 +96,8 @@ namespace CinemaProject.Areas.Admin.Controllers
         {
             ViewBag.Categories = await _categoryRepository.GetAsync(tracked: false);
             ViewBag.Cinemas = await _cinemaRepository.GetAsync(tracked: false);
+            ViewBag.Actors = await _actorRepository.GetAsync(tracked: false); // جلب الممثلين
+
             return View();
         }
 

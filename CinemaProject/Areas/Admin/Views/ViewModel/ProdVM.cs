@@ -4,7 +4,7 @@
     {
         public List<Movie> movie { get; set; }=new List<Movie>();
         public List<Category> categories { get; set; } = new List<Category>();
-        public List<Cinema> cinemas { get; set; } = new List<Cinema>();
+        public List<Cinema> Cinemas { get; set; } = new List<Cinema>();
 
         public string? Name { get; set; }
 

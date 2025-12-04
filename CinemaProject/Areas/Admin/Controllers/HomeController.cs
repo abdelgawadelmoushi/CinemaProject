@@ -28,9 +28,9 @@ namespace CinemaProject.Areas.Admin.Controllers
             return View(cinemas);
         }
 
-        public IActionResult NotFoundPage() 
-        { 
-            return View(); 
+        public IActionResult NotFoundPage()
+        {
+            return View();
         }
     }
 }

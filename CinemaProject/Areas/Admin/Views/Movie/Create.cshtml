@@ -46,7 +46,16 @@
                         <option value="false">InActive</option>
                     </select>
                 </div>
-
+                <div class="mb-3">
+                    <label class="form-label">Actors</label>
+                    <select name="ActorIds" class="form-select" multiple>
+                        @foreach (var actor in ViewBag.Actors)
+                        {
+                            <option value="@actor.Id">@actor.Name</option>
+                        }
+                    </select>
+                    <small class="text-muted">choose Actor</small>
+                </div>
                 <div class="mb-3">
                     <label for="CategoryId" class="form-label">Category</label>
                     <select name="CategoryId" class="form-select">

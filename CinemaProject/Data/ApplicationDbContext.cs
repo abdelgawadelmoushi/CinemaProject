@@ -16,6 +16,7 @@ namespace CinemaProject.Data
         public DbSet<Actor> Actors { get; set; }
         public DbSet<MovieSubImages> MovieSubImages { get; set; }
         public DbSet<ActorMovie> ActorMovies { get; set; }
+        public DbSet<MovieCinema> movieCinemas { get; set; }
         public DbSet<ApplicationUserOTP> ApplicationUserOTPs { get; set; }
 
 

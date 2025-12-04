@@ -1,10 +1,11 @@
 using CinemaProject.Repositories;
 using CinemaProject.Repositories.IRepositories;
 using CinemaProject.Utilities;
+using CinemaProject.Utilities.DBInitializer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace CinemaProject
 {
@@ -50,6 +51,7 @@ namespace CinemaProject
             builder.Services.AddScoped<IMovieSubImagesRepository, MovieSubImagesRepository>();
             builder.Services.AddScoped<IActorMovieRepository, ActorMovieRepository>();
             builder.Services.AddTransient<IEmailSender, EmailSender>();
+            builder.Services.AddScoped<IDBInitializer, DBInitializer>();
 
             var app = builder.Build();
 
@@ -74,6 +76,12 @@ namespace CinemaProject
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var initializer = scope.ServiceProvider.GetRequiredService<IDBInitializer>();
+                initializer.Initialize();
+
+            }
             app.Run();
         }
     }
