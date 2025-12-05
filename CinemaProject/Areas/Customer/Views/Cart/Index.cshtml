@@ -35,7 +35,8 @@
         </div>
     </div>
 </section>
-
+@if (User.IsInRole(SD.Super_Admin_Role) || User.IsInRole(SD.Admin_Role))
+{
 <div class="container">
     <div class="row mb-3 align-items-center my-3">
         <div class="col-md-6">
@@ -96,13 +97,13 @@
         </div>
     </div>
 </div>
-
+}
 <div class="row">
     @foreach (var item in Model)
     {
         <div class="col-md-4 mb-4">
             <div class="card" style="width: 15rem;">
-                <img src="~/Images/Cinema_Images/@item.Img" class="card-img-top" alt="@item.Name" />
+                <img src="~/Images/Cinema_Images/@item.Img" class="card-img-top" alt="@item.Name height="270PX" />
 
                 <div class="card-body">
                     <p><span class="badge text-bg-primary">Cinema Name</span> @item.Name</p>

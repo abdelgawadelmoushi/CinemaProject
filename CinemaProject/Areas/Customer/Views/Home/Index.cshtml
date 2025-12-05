@@ -5,11 +5,17 @@
         <div class="col-md-6">
             <h2 class="display-6">All Cinemas</h2>
         </div>
+        
         <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
+            @if (User.IsInRole(SD.Super_Admin_Role) || User.IsInRole(SD.Admin_Role))
+        {
             <a href="/Admin/Cinema/Create" class="btn btn-success">Create</a>
-        </div>
+        }
+        </div
+       
     </div>
-
+  @if (User.IsInRole(SD.Super_Admin_Role) || User.IsInRole(SD.Admin_Role))
+        {
     <div class="row">
         <div class="col-12">
 
@@ -45,6 +51,65 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    }
+</div>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card" style="width: 15rem;">
+                <img src="~/Images/Cinema_Images/@item.Img" class="card-img-top" alt="@item.Name height="270PX" />
+
+                <div class="card-body">
+                    <p><span class="badge text-bg-primary">Cinema Name</span> @item.Name</p>
+
+                    <p>
+                        <span class="badge text-bg-primary">Status</span>
+                        @if (item.Status)
+                        {
+                            <span class="badge text-bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge text-bg-danger">Inactive</span>
+                        }
+                    </p>
+
+                    <p><span class="badge text-bg-secondary">@item.Description</span></p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Pagination -->
+<div class="row">
+    <div class="col-12 d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                @if (ViewBag.currentPage > 1 && ViewBag.currentPage <= ViewBag.totalNumberOfPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="/customer/Home/Index?page=@(ViewBag.currentPage - 1)&CinemaName=@ViewBag.CinemaName&CinemaId=@ViewBag.CinemaId">Previous</a>
+                    </li>
+                }
+
+                @for (var i = 1; i <= ViewBag.totalNumberOfPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.currentPage ? "active" : "")">
+                        <a class="page-link" href="/customer/Home/Index?page=@i&CinemaName=@ViewBag.CinemaName&CinemaId=@ViewBag.CinemaId">@i</a>
+                    </li>
+                }
+
+                @if (ViewBag.currentPage < ViewBag.totalNumberOfPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="/customer/Home/Index?page=@(ViewBag.currentPage + 1)&CinemaName=@ViewBag.CinemaName&CinemaId=@ViewBag.CinemaId">Next</a>
+                    </li>
+                }
+            </ul>
+        </nav>
     </div>
 </div>
 
