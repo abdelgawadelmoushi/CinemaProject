@@ -19,16 +19,15 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+		<PackageReference Include="Stripe.net" Version="50.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Folder Include="Areas\ChatApp\Controllers\" />
 		<Folder Include="Migrations\" />
 		<Folder Include="wwwroot\assets\customer\" />
-		<Folder Include="wwwroot\css\customer\" />
 		<Folder Include="wwwroot\Images\Actor_Images\" />
 		<Folder Include="wwwroot\img\cinema_Images\" />
-		<Folder Include="wwwroot\js\customer\" />
 		<Folder Include="wwwroot\scss\customer\" />
 		<Folder Include="wwwroot\img\customer\" />
 		<Folder Include="wwwroot\vendor\customer\" />

@@ -109,16 +109,9 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/admin/Category/index">
+                                        <a class="nav-link" href="/admin/Cinema">
                                             <div class="d-flex align-items-center">
-                                                <span class="nav-link-text ps-1">Category</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/admin/Actor/index">
-                                            <div class="d-flex align-items-center">
-                                                <span class="nav-link-text ps-1">Actors</span>
+                                                <span class="nav-link-text ps-1">Cinemas</span>
                                             </div>
                                         </a>
                                     </li>
@@ -130,13 +123,23 @@
                                         </a>
                                     </li>
                                     <!-- more inner pages-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/admin/Cinema">
+                                  @if (User.IsInRole(SD.Super_Admin_Role) || User.IsInRole(SD.Admin_Role) || User.IsInRole(SD.Employee_Role))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/admin/Category/index">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text ps-1">Category</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/admin/Actor/index">
                                             <div class="d-flex align-items-center">
-                                                <span class="nav-link-text ps-1">Cinemas</span>
+                                                <span class="nav-link-text ps-1">Actors</span>
                                             </div>
                                         </a>
                                     </li>
+}
                             </li>
                         </ul>
 

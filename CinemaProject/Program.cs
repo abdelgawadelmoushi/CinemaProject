@@ -2,6 +2,7 @@ using CinemaProject.Repositories;
 using CinemaProject.Repositories.IRepositories;
 using CinemaProject.Utilities;
 using CinemaProject.Utilities.DBInitializer;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Build.Framework;
@@ -42,10 +43,15 @@ namespace CinemaProject
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login"; // Specifies the path to your login page
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied"; // Optional: for unauthorized access
+                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter; // Default parameter for return URL
+            });
             //instead of 
             //builder.Services.AddScoped<IRepository<ApplicationUserOTP>, Repository<ApplicationUserOTP>>();
-            
+
             // i used a geniric Repository as below 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IMovieSubImagesRepository, MovieSubImagesRepository>();
@@ -55,6 +61,12 @@ namespace CinemaProject
 
             var app = builder.Build();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var initializer = scope.ServiceProvider.GetRequiredService<IDBInitializer>();
+                initializer.Initialize();
+
+            }
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -76,12 +88,7 @@ namespace CinemaProject
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var initializer = scope.ServiceProvider.GetRequiredService<IDBInitializer>();
-                initializer.Initialize();
-
-            }
+          
             app.Run();
         }
     }

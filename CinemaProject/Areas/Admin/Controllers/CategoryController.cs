@@ -1,10 +1,12 @@
 ﻿using CinemaProject.Repositories.IRepositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace CinemaProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly IRepository<Category> _categoryRepository;
@@ -47,7 +49,10 @@ namespace CinemaProject.Areas.Admin.Controllers
         }
 
         // ================= Edit =================
-        [HttpGet]
+        [HttpGet]   
+        [Authorize (Roles =$"{SD.Super_Admin_Role} , {SD.Admin_Role} ")]
+
+
         public async Task<IActionResult> Edit(int id)
         {
             var category = await _categoryRepository.GetOneAsync(e => e.Id == id);
@@ -59,6 +64,8 @@ namespace CinemaProject.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = $"{SD.Super_Admin_Role} , {SD.Admin_Role} ")]
+
         public async Task<IActionResult> Edit(Category category)
         {
             if (!ModelState.IsValid)
@@ -76,6 +83,7 @@ namespace CinemaProject.Areas.Admin.Controllers
         }
 
         // ================= Delete =================
+        [Authorize(Roles = $"{SD.Super_Admin_Role} , {SD.Admin_Role} ")]
         public async Task<IActionResult> Delete(int id)
         {
             var category = await _categoryRepository.GetOneAsync(e => e.Id == id);

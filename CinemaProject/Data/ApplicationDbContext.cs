@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CinemaProject.ViewModels;
+using CinemaProject.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using CinemaProject.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaProject.Data
 {
@@ -18,7 +19,8 @@ namespace CinemaProject.Data
         public DbSet<ActorMovie> ActorMovies { get; set; }
         public DbSet<MovieCinema> movieCinemas { get; set; }
         public DbSet<ApplicationUserOTP> ApplicationUserOTPs { get; set; }
-
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<Promotion> Promotions { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

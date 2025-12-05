@@ -83,10 +83,15 @@
     <div class="row mb-3 align-items-center my-3">
         <div class="col-md-6">
             <h2 class="display-6">All Movies</h2>
+
         </div>
+        @if (User.IsInRole(SD.Super_Admin_Role) || User.IsInRole(SD.Admin_Role) || User.IsInRole(SD.Employee_Role))
+                            {
         <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
             <a href="/Admin/Movie/Create" class="btn btn-success">Add Movie</a>
         </div>
+                            }
+
     </div>
 
     <div class="row">
@@ -157,11 +162,18 @@
                             @*                     <td><span class="badge text-bg-primary">Cinema Name </span></td>
  *@                            <td><span class="badge text-bg-primary">@item.Cinema.Name</span></td>
 
+                        @if (User.IsInRole(SD.Super_Admin_Role) || User.IsInRole(SD.Admin_Role))
+                            {
 
-                            <td>
-                                <a href="/Admin/Movie/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-                            </td>
+                                <td>
+                                    <a href="/Admin/Movie/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>No Action</td>
+                            }
                         </tr>
                                         }
                 </tbody>
@@ -169,30 +181,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-12 d-flex justify-content-center">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    @if (ViewBag.currentPage > 1 && ViewBag.currentPage <= ViewBag.totalNumberOfPages)
-                    {
-                        <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@(ViewBag.currentPage - 1)&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&CinemaId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">Previous</a></li>
-                    }
-
-                    @for (var i = 1; i <= ViewBag.totalNumberOfPages; i++)
-                    {
-                        <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@i&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&CinemaId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">@i</a></li>
-                    }
-
-                    @if (ViewBag.currentPage < ViewBag.totalNumberOfPages)
-                    {
-                        <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@(ViewBag.currentPage + 1)&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&brandId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">Next</a></li>
-                    }
-
-                </ul>
-            </nav>
-        </div>
-    </div>
-</div>
+ 
 <div class="row">
     @foreach (var item in Model)
     {
@@ -250,7 +239,30 @@
         </div>
     }
 </div>
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    @if (ViewBag.currentPage > 1 && ViewBag.currentPage <= ViewBag.totalNumberOfPages)
+                    {
+                        <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@(ViewBag.currentPage - 1)&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&CinemaId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">Previous</a></li>
+                    }
 
+                    @for (var i = 1; i <= ViewBag.totalNumberOfPages; i++)
+                    {
+                        <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@i&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&CinemaId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">@i</a></li>
+                    }
+
+                    @if (ViewBag.currentPage < ViewBag.totalNumberOfPages)
+                    {
+                        <li class="page-item"><a class="page-link" href="/Admin/Movie/Index?page=@(ViewBag.currentPage + 1)&movieName=@ViewBag.MovieName&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&categoryId=@ViewBag.CategoryId&brandId=@ViewBag.CinemaId&lessQuantity=@ViewBag.LessQuantity">Next</a></li>
+                    }
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const deleteButtons = document.querySelectorAll(".btn-delete");

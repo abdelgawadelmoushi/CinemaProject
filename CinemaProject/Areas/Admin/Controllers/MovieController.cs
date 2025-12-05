@@ -1,11 +1,13 @@
 ﻿using CinemaProject.Models;
 using CinemaProject.Repositories.IRepositories;
 using CinemaProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+
     public class MovieController : Controller
     {
         private readonly IRepository<Actor> _actorRepository;
@@ -30,6 +32,7 @@ namespace CinemaProject.Areas.Admin.Controllers
         }
 
         #region Index
+
         public async Task<IActionResult> Index(movieFilterVM movieFilterVM)
         {
             var movies = await _movieRepository.GetAsync(includes: [e => e.Category, e => e.Cinema], tracked: false);
@@ -92,6 +95,8 @@ namespace CinemaProject.Areas.Admin.Controllers
         #endregion
 
         #region Create
+        [Authorize(Roles = $"{SD.Super_Admin_Role} , {SD.Admin_Role} ,{SD.Employee_Role} ")]
+
         public async Task<IActionResult> Create()
         {
             ViewBag.Categories = await _categoryRepository.GetAsync(tracked: false);
@@ -102,6 +107,8 @@ namespace CinemaProject.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = $"{SD.Super_Admin_Role} , {SD.Admin_Role} ,{SD.Employee_Role} ")]
+
         public async Task<IActionResult> Create(Movie movie, IFormFile Img, List<IFormFile> SubImgs)
         {
             // Validate Cinema & Category exist
@@ -158,6 +165,8 @@ namespace CinemaProject.Areas.Admin.Controllers
         #endregion
 
         #region Edit
+        [Authorize(Roles = $"{SD.Super_Admin_Role} , {SD.Admin_Role} ")]
+
         public async Task<IActionResult> Edit(int id)
         {
             var movie = await _movieRepository.GetOneAsync(e => e.Id == id, tracked: false);
@@ -171,6 +180,8 @@ namespace CinemaProject.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = $"{SD.Super_Admin_Role} , {SD.Admin_Role} ")]
+
         public async Task<IActionResult> Edit(Movie model, IFormFile MainImg, List<IFormFile> SubImgs)
         {
             var movieInDb = await _movieRepository.GetOneAsync(e => e.Id == model.Id, tracked: false);
@@ -242,6 +253,8 @@ namespace CinemaProject.Areas.Admin.Controllers
 
         #region Delete
         [HttpGet]
+        [Authorize(Roles = $"{SD.Super_Admin_Role} , {SD.Admin_Role} ")]
+
         public async Task<IActionResult> Delete(int id)
         {
             var movie = await _movieRepository.GetOneAsync(e => e.Id == id);
@@ -251,6 +264,8 @@ namespace CinemaProject.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = $"{SD.Super_Admin_Role} , {SD.Admin_Role} ")]
+
         public async Task<IActionResult> Delete(int id, IFormCollection form)
         {
             var movie = await _movieRepository.GetOneAsync(e => e.Id == id);

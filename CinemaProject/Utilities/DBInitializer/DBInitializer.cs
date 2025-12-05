@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
 
 namespace CinemaProject.Utilities.DBInitializer
@@ -24,7 +25,7 @@ namespace CinemaProject.Utilities.DBInitializer
                 _context.Database.Migrate();
             }
 
-            if (_roleManager.Roles is null)
+            if (_roleManager.Roles.IsNullOrEmpty())
             {
                                                                 // wait to take the result
                 _roleManager.CreateAsync(new(SD.Super_Admin_Role)).GetAwaiter().GetResult();
