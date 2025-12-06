@@ -35,7 +35,6 @@ namespace CinemaProject.Data
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(EntityConfigurations.ActorMovieEntityTypeConfiguration).Assembly);
         }
-        public DbSet<CinemaProject.ViewModels.ResetPasswordVM> ResetPasswordVM { get; set; } = default!;
 
     }
 }

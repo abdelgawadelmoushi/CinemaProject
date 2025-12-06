@@ -7,3 +7,4 @@ global using CinemaProject.Repositories.IRepositories;
 global using CinemaProject.Utilities;
 global using Microsoft.AspNetCore.Identity;
 global using CinemaProject.Utilities.DBInitializer;
+global using CinemaProject.ViewModels;

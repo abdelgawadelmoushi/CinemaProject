@@ -27,6 +27,8 @@
     <meta name="theme-color" content="#ffffff">
     <script src="~/assets/js/config.js"></script>
     <script src="~/vendors/simplebar/simplebar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
     <!-- ===============================================-->
@@ -123,6 +125,7 @@
                                         </a>
                                     </li>
                                     <!-- more inner pages-->
+                              
                                   @if (User.IsInRole(SD.Super_Admin_Role) || User.IsInRole(SD.Admin_Role) || User.IsInRole(SD.Employee_Role))
                                     {
                                         <li class="nav-item">
@@ -152,21 +155,59 @@
                                 </a>
                                 <ul class="nav collapse show" id="Authorizations">
 
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/Identity/Account/login">
-                                            <div class="d-flex align-items-center">
-                                                <span class="nav-link-text ps-1">Login</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/Identity/Account/register">
-                                            <div class="d-flex align-items-center">
-                                                <span class="nav-link-text ps-1">register</span>
-                                            </div>
-                                        </a>
+                                           @if (User.IsInRole(SD.Super_Admin_Role))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/admin/User/Index">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text ps-1">Users</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
 
-                                    </li>
+                                    @if (User is not null && User.Identity.IsAuthenticated)
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/Identity/Profile/Index">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text ps-1">Welcome</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/Identity/Account/Logout">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text ps-1">Logout</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/Identity/Profile/Index">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text ps-1">Profile</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/Identity/Account/login">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text ps-1">Login</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/Identity/Account/register">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text ps-1">register</span>
+                                                </div>
+                                            </a>
+                                        </li>
+
+                                    }
                                 </ul>
                             </li>
                             <li class="nav-item">

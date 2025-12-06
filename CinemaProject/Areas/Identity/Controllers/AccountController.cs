@@ -28,12 +28,18 @@ namespace CinemaProject.Areas.Identity.Controllers
             _applicationUserOTPRepository = applicationUserOTPRepository;
         }
 
+        public async Task<IActionResult> Logout()
+        {
+         await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Login));
+        }
 
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM registerVM)
@@ -66,6 +72,9 @@ namespace CinemaProject.Areas.Identity.Controllers
          await   _emailSender.SendEmailAsync(registerVM.Email, "CinemaProject - Confirm Your Email",
                 $"<h1> Please Confirm your Email by clicking  <a href=' {Link} '>Here</a></h1>"
                 );
+
+            //save the registration as a customer
+           await _userManager.AddToRoleAsync(user, SD.Customer_Role);
 
             TempData["success-notification"] = " Account Added Successfully , please Confirm your Email";
 
@@ -123,6 +132,10 @@ namespace CinemaProject.Areas.Identity.Controllers
 
             if (!result.Succeeded)
             {
+                if(!user.LockoutEnabled){
+                    ModelState.AddModelError(string.Empty, $"Your Account is locked till {user.LockoutEnd}");
+
+                }
                 if (result.IsNotAllowed)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid UserName / Email Or Password");

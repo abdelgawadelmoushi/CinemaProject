@@ -27,6 +27,7 @@
 		<Folder Include="Migrations\" />
 		<Folder Include="wwwroot\assets\customer\" />
 		<Folder Include="wwwroot\Images\Actor_Images\" />
+		<Folder Include="wwwroot\Images\User_images\" />
 		<Folder Include="wwwroot\img\cinema_Images\" />
 		<Folder Include="wwwroot\scss\customer\" />
 		<Folder Include="wwwroot\img\customer\" />
