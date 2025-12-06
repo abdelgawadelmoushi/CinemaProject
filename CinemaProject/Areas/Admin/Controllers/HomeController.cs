@@ -28,6 +28,17 @@ namespace CinemaProject.Areas.Admin.Controllers
             return View(cinemas);
         }
 
+        public IActionResult Details(int id)
+        {
+            // ال فايند بيرجع الداتا من غير ما نعمل ريكويست جديد وبيجتفظ بيها في الكاش ولكن مينفعش اقفل التراكينج لكن ال فيريست بتقفل
+            var movie = _context.Movies.Find(id);
+            if (movie is null)
+            {
+                return NotFound();
+            }
+            return View(movie);
+        }
+
         public IActionResult NotFoundPage()
         {
             return View();

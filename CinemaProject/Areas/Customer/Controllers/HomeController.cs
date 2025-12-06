@@ -97,6 +97,16 @@ namespace CinemaProject.Areas.Customer.Controllers
             return View();
         }
 
+        public IActionResult Details(int id)
+        {
+            // «б Ё«ндѕ »н—ћЏ «бѕ« « гд џн— г« дЏгб —няжн”  ћѕнѕ ж»нћ Ёў »не« Ён «бя«‘ жбяд гндЁЏ‘ «ёЁб «б —«яндћ бяд «б Ён—н”  » ёЁб
+            var movie = _context.Movies.Find(id);
+            if (movie is null)
+            {
+                return NotFound();
+            }
+            return View(movie);
+        }
 
         [HttpGet]
         public IActionResult Addcinemas()

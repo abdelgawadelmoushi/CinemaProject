@@ -1,194 +1,77 @@
-﻿@model IEnumerable<Cinema>
+﻿@model IEnumerable<Cart>
 
-<!-- Filter Section -->
-<section class="py-3 filter-bar">
-    <div class="container">
-        <div class="row" style="background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;">
-            <div class="col-12">
-                <form method="get">
-                    <div class="row">
-                        <!-- Cinema Dropdown -->
-                        <div class="col-md-2">
-                            <select name="CinemaId" class="form-control">
-                                <option value="">--Select Cinema--</option>
-                                @foreach (var item in ViewBag.Cinemas)
-                                {
-                                    if (ViewBag.CinemaId != null && ViewBag.CinemaId == item.Id)
-                                    {
-                                        <option value="@item.Id" selected>@item.Name</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@item.Id">@item.Name</option>
-                                    }
-                                }
-                            </select>
-                        </div>
+<section class="h-100">
+    <div class="container h-100 py-5">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-10">
 
-                        <!-- Submit Button -->
-                        <div class="col-md-2 my-2">
-                            <button type="submit" class="btn btn-dark w-100">Filter</button>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="fw-normal mb-0">Shopping Cart</h3>
+                    <div>
+                        <p class="mb-0">
+                            <span class="text-muted">Sort by:</span> <a href="#!" class="text-body">
+                                price <i class="fas fa-angle-down mt-1"></i>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+                @foreach (var item in Model)
+                {
+                    <div class="card rounded-3 mb-4">
+                        <div class="card-body p-4">
+                            <div class="row d-flex justify-content-between align-items-center">
+                                <div class="col-md-2 col-lg-2 col-xl-2">
+                                    <img src="~/images/movie_images/@item.Movie.MainImg"
+                                         class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-xl-3">
+                                    <p class="lead fw-normal mb-2">@item.Movie.Name</p>
+                                    <p><span class="text-muted">@item.Movie.Description</span></p>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                    <a asp-action="DecrementCount" asp-route-movieId="@item.MovieId"><i class="bi bi-dash-square"></i></a>
+
+                                    <input id="form1" min="0" name="quantity" value="@item.Count" type="number"
+                                           class="form-control form-control-sm" disabled />
+
+                                    <a href="/Customer/Cart/IncrementCount?movieId=@item.MovieId"><i class="bi bi-plus-square"></i></a>
+                                </div>
+                                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                    <h5 class="mb-0">@((item.MoviePrice * @item.Count).ToString("c"))</h5>
+                                </div>
+                                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                    <a href="/Customer/Cart/DeleteItem?movieId=@item.MovieId" class="text-danger"><i class="bi bi-trash3"></i></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </form>
+                }
+
+                <div class="card mb-4">
+                    <div class="card-body p-4 d-flex flex-row">
+                        <form>
+                            <div data-mdb-input-init class="form-outline flex-fill">
+                                <input name="code" type="text" id="form1" class="form-control form-control-lg" />
+                                <label class="form-label" for="form1">Discound code</label>
+                            </div>
+                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-warning btn-lg ms-3 mt-3">Apply</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <a asp-action="Pay" data-mdb-button-init data-mdb-ripple-init class="btn btn-warning btn-block btn-lg">Proceed to Pay</a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </section>
-@if (User.IsInRole(SD.Super_Admin_Role) || User.IsInRole(SD.Admin_Role))
-{
-<div class="container">
-    <div class="row mb-3 align-items-center my-3">
-        <div class="col-md-6">
-            <h2 class="display-6">All Cinemas</h2>
-        </div>
 
-        @if (User.IsInRole(SD.Super_Admin_Role) || User.IsInRole(SD.Admin_Role) || User.IsInRole(SD.Employee_Role))
-        {
-            <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
-                <a href="/Admin/Cinema/Create" class="btn btn-success">Create</a>
-            </div>
-        }
-    </div>
 
-    <div class="row">
-        <div class="col-12">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <th>@item.Id</th>
-                            <td>@item.Name</td>
-                            <td>
-                                @if (item.Status)
-                                {
-                                    <span class="badge text-bg-success">Active</span>
-                                }
-                                else
-                                {
-                                    <span class="badge text-bg-danger">Inactive</span>
-                                }
-                            </td>
-
-                            @if (User.IsInRole(SD.Super_Admin_Role) || User.IsInRole(SD.Admin_Role))
-                            {
-                                <td>
-                                    <a href="/Admin/Cinema/Edit/@item.Id" class="btn btn-warning">Edit</a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-                                </td>
-                            }
-                           else
-                            {
-                                <td>No Action</td>
-                            }
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+@section Scripts {
+    <partial name="_NotificationPartial">
 }
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-md-4 mb-4">
-            <div class="card" style="width: 15rem;">
-                <img src="~/Images/Cinema_Images/@item.Img"
-                     class="card-img-top"
-                     alt="@item.Name "height="270PX" />
-
-                <div class="card-body">
-                    <p><span class="badge text-bg-primary">Cinema Name</span> @item.Name</p>
-
-                    <p>
-                        <span class="badge text-bg-primary">Status</span>
-                        @if (item.Status)
-                        {
-                            <span class="badge text-bg-success">Active</span>
-                        }
-                        else
-                        {
-                            <span class="badge text-bg-danger">Inactive</span>
-                        }
-                    </p>
-
-                    <p><span class="badge text-bg-secondary">@item.Description</span></p>
-                </div>
-            </div>
-        </div>
-    }
-</div>
-
-<!-- Pagination -->
-<div class="row">
-    <div class="col-12 d-flex justify-content-center">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                @if (ViewBag.currentPage > 1 && ViewBag.currentPage <= ViewBag.totalNumberOfPages)
-                {
-                    <li class="page-item">
-                        <a class="page-link" href="/Admin/Cinema/Index?page=@(ViewBag.currentPage - 1)&CinemaName=@ViewBag.CinemaName&CinemaId=@ViewBag.CinemaId">Previous</a>
-                    </li>
-                }
-
-                @for (var i = 1; i <= ViewBag.totalNumberOfPages; i++)
-                {
-                    <li class="page-item @(i == ViewBag.currentPage ? "active" : "")">
-                        <a class="page-link" href="/Admin/Cinema/Index?page=@i&CinemaName=@ViewBag.CinemaName&CinemaId=@ViewBag.CinemaId">@i</a>
-                    </li>
-                }
-
-                @if (ViewBag.currentPage < ViewBag.totalNumberOfPages)
-                {
-                    <li class="page-item">
-                        <a class="page-link" href="/Admin/Cinema/Index?page=@(ViewBag.currentPage + 1)&CinemaName=@ViewBag.CinemaName&CinemaId=@ViewBag.CinemaId">Next</a>
-                    </li>
-                }
-            </ul>
-        </nav>
-    </div>
-</div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const deleteButtons = document.querySelectorAll(".btn-delete");
-
-        deleteButtons.forEach(button => {
-            button.addEventListener("click", function (e) {
-                e.preventDefault();
-
-                const url = this.getAttribute("href");
-
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "This action cannot be undone!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#d33",
-                    cancelButtonColor: "#3085d6",
-                    confirmButtonText: "Yes, delete it!"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                          title: "Deleted!",
-                          text: "Your file has been deleted.",
-                          icon: "success"
-                        });
-
-                        window.location.href = url;
-                    }
-                });
-            });
-        });
-    });
-</script>
