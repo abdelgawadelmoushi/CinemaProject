@@ -73,7 +73,7 @@ namespace CinemaProject.Areas.Identity
                 }
                 return View("Index", applicationUserVM); 
             }
-            return RedirectToAction("index");
+            return RedirectToAction("index ", applicationUserVM);
         }
 
         [HttpPost]

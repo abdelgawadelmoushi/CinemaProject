@@ -4,44 +4,53 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CinemaProject.Areas.Admin.Controllers
 {
-    [Area("Customer")]
+    [Area("Admin")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _context;
-        private readonly IRepository<Movie> _movieRepository;
-        private readonly IRepository<Cinema> _cinemaRepository;
-        public HomeController(
-       ILogger<HomeController> logger,
-       IRepository<Movie> movieRepository,
-       IRepository<Cinema> cinemaRepository,
-       ApplicationDbContext context)
-        {
-            _logger = logger;
-            _movieRepository = movieRepository;
-            _cinemaRepository = cinemaRepository;
-            _context = context;
-        }
-        public async Task<IActionResult> Index()
-        {
-            var cinemas = await _cinemaRepository.GetAsync(tracked: false);
-            return View(cinemas);
-        }
+        //    private readonly ILogger<HomeController> _logger;
+        //    private readonly ApplicationDbContext _context;
+        //    private readonly IRepository<Movie> _movieRepository;
+        //    private readonly IRepository<Cinema> _cinemaRepository;
+        //    public HomeController(
+        //   ILogger<HomeController> logger,
+        //   IRepository<Movie> movieRepository,
+        //   IRepository<Cinema> cinemaRepository,
+        //   ApplicationDbContext context)
+        //    {
+        //        _logger = logger;
+        //        _movieRepository = movieRepository;
+        //        _cinemaRepository = cinemaRepository;
+        //        _context = context;
+        //    }
+        //    public async Task<IActionResult> Index()
+        //    {
+        //        var cinemas = await _cinemaRepository.GetAsync(tracked: false);
+        //        return View(cinemas);
+        //    }
 
-        public IActionResult Details(int id)
-        {
-            // ال فايند بيرجع الداتا من غير ما نعمل ريكويست جديد وبيجتفظ بيها في الكاش ولكن مينفعش اقفل التراكينج لكن ال فيريست بتقفل
-            var movie = _context.Movies.Find(id);
-            if (movie is null)
-            {
-                return NotFound();
-            }
-            return View(movie);
-        }
+        //    public IActionResult Details(int id)
+        //    {
+        //        // ال فايند بيرجع الداتا من غير ما نعمل ريكويست جديد وبيجتفظ بيها في الكاش ولكن مينفعش اقفل التراكينج لكن ال فيريست بتقفل
+        //        var movie = _context.Movies.Find(id);
+        //        if (movie is null)
+        //        {
+        //            return NotFound();
+        //        }
+        //        return View(movie);
+        //    }
 
-        public IActionResult NotFoundPage()
-        {
-            return View();
-        }
+        //    public IActionResult NotFoundPage()
+        //    {
+        //        return View();
+        //    }
+        public ViewResult Index()
+    {
+        return View();
     }
+
+    public IActionResult NotFoundPage()
+    {
+        return View();
+    }
+}
 }
