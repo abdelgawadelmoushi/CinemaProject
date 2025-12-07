@@ -22,13 +22,13 @@
     <link rel="shortcut icon" type="image/x-icon" href="~/assets/img/favicons/favicon.ico">
     <link rel="manifest" href="~/assets/img/favicons/manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <meta name="msapplication-TileImage" content="~/assets/img/favicons/mstile-150x150.png">
     <meta name="theme-color" content="#ffffff">
     <script src="~/assets/js/config.js"></script>
     <script src="~/vendors/simplebar/simplebar.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 
 
     <!-- ===============================================-->
@@ -41,6 +41,7 @@
     <link href="~/assets/css/theme.min.css" rel="stylesheet" id="style-default">
     <link href="~/assets/css/user-rtl.min.css" rel="stylesheet" id="user-style-rtl">
     <link href="~/assets/css/user.min.css" rel="stylesheet" id="user-style-default">
+
     <script>
         var isRTL = JSON.parse(localStorage.getItem('isRTL'));
         if (isRTL) {
@@ -88,7 +89,7 @@
 
                     </div><a class="navbar-cinema" href="/admin/home/index.html">
                         <div class="d-flex align-items-center py-3">
-                            <img class="me-2" src="~/assets/img/icons/spot-illustrations/falcon.png" alt="" width="40" /><span class="font-sans-serif">falcon</span>
+                            <img class="me-2" src="~/assets/img/icons/spot-illustrations/falcon.png" alt="" width="60" /><span class="font-sans-serif">3MCinema</span>
                         </div>
                     </a>
                 </div>
@@ -125,8 +126,7 @@
                                         </a>
                                     </li>
                                     <!-- more inner pages-->
-                              
-                                  @if (User.IsInRole(SD.Super_Admin_Role) || User.IsInRole(SD.Admin_Role) || User.IsInRole(SD.Employee_Role))
+                                    @if (User.IsInRole(SD.Super_Admin_Role) || User.IsInRole(SD.Admin_Role) || User.IsInRole(SD.Employee_Role))
                                     {
                                         <li class="nav-item">
                                             <a class="nav-link" href="/admin/Category/index">
@@ -137,12 +137,12 @@
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="/admin/Actor/index">
-                                            <div class="d-flex align-items-center">
-                                                <span class="nav-link-text ps-1">Actors</span>
-                                            </div>
-                                        </a>
-                                    </li>
-}
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text ps-1">Actors</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
                             </li>
                         </ul>
 
@@ -155,16 +155,6 @@
                                 </a>
                                 <ul class="nav collapse show" id="Authorizations">
 
-                                           @if (User.IsInRole(SD.Super_Admin_Role))
-                                    {
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/admin/User/Index">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="nav-link-text ps-1">Users</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    }
 
                                     @if (User is not null && User.Identity.IsAuthenticated)
                                     {
@@ -323,7 +313,7 @@
                                                 <!-- more inner pages-->
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="~/customer/home/details.html">
+                                                <a class="nav-link" href="~/app/e-commerce/movie/movie-details.html">
                                                     <div class="d-flex align-items-center">
                                                         <span class="nav-link-text ps-1">Movie details</span>
                                                     </div>
@@ -375,7 +365,7 @@
                                         <!-- more inner pages-->
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="~/Customer/Cart">
+                                        <a class="nav-link" href="/Customer/Cart">
                                             <div class="d-flex align-items-center">
                                                 <span class="nav-link-text ps-1">Shopping cart</span>
                                             </div>
@@ -2299,7 +2289,7 @@
                             </div>
                         </li>
                         <li class="nav-item d-none d-sm-block">
-                            <a class="nav-link px-0 notification-indicator notification-indicator-warning notification-indicator-fill fa-icon-wait" href="~/Customer/Cart"><span class="fas fa-shopping-cart" data-fa-transform="shrink-7" style="font-size: 33px;"></span><span class="notification-indicator-number">1</span></a>
+                            <a class="nav-link px-0 notification-indicator notification-indicator-warning notification-indicator-fill fa-icon-wait" href="/Customer/Cart"><span class="fas fa-shopping-cart" data-fa-transform="shrink-7" style="font-size: 33px;"></span><span class="notification-indicator-number">1</span></a>
 
                         </li>
                         <li class="nav-item dropdown">
