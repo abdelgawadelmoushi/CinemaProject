@@ -53,7 +53,7 @@
                         <form>
                             <div data-mdb-input-init class="form-outline flex-fill">
                                 <input name="code" type="text" id="form1" class="form-control form-control-lg" />
-                                <label class="form-label" for="form1">Discound code</label>
+                                <label class="form-label" for="form1">Discount code</label>
                             </div>
                             <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-warning btn-lg ms-3 mt-3">Apply</button>
                         </form>
@@ -72,6 +72,47 @@
 </section>
 
 
-@section Scripts {
+@* @section Scripts {
     <partial name="_NotificationPartial">
+} *@
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+        <script>
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+        </script>
+
+    @if (TempData["success-notification"] is not null)
+    {
+            <script>
+                toastr.success('@TempData["success-notification"]');
+            </script>
+    }
+    else if (TempData["error-notification"] is not null)
+    {
+            <script>
+                toastr.error('@TempData["error-notification"]');
+            </script>
+    }
 }
+
+

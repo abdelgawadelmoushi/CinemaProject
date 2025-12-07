@@ -185,7 +185,7 @@ namespace CinemaProject.Areas.Customer.Controllers
                     PriceData = new SessionLineItemPriceDataOptions
                     {
                         Currency = "egp",
-                        ProductData = new SessionLineItemPriceDatamovieDataOptions
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
                             Name = item.Movie.Name,
                             Description = item.Movie.Description,
