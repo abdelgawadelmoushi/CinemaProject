@@ -23,7 +23,7 @@ namespace CinemaProject.Areas.Customer.Controllers
         {
             _cinemaRepository = cinemaRepository;
             _movieRepository = movieRepository;
-            _cartRepository = cartRepository;
+            _cartRepository = cartRepository;  
             _promotionRepository = promotionRepository;
             _userManager = userManager;
         }
