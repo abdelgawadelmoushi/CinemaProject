@@ -11,6 +11,7 @@ namespace CinemaProject.Areas.Admin.Controllers
     public class MovieController : Controller
     {
         private readonly IRepository<Actor> _actorRepository;
+        private readonly ApplicationDbContext _context;
         private readonly IRepository<Category> _categoryRepository;
         private readonly IRepository<Cinema> _cinemaRepository;
         private readonly IRepository<Movie> _movieRepository;
@@ -21,7 +22,8 @@ namespace CinemaProject.Areas.Admin.Controllers
             IRepository<Category> categoryRepository,
             IRepository<Cinema> cinemaRepository,
             IMovieSubImagesRepository movieSubImagesRepository,
-            IRepository<Movie> movieRepository
+            IRepository<Movie> movieRepository,
+            ApplicationDbContext context
         )
         {
             _actorRepository = actorRepository;
@@ -29,8 +31,18 @@ namespace CinemaProject.Areas.Admin.Controllers
             _cinemaRepository = cinemaRepository;
             _movieSubImagesRepository = movieSubImagesRepository;
             _movieRepository = movieRepository;
+            _context = context;
+
         }
 
+        public IActionResult ByCinema(int cinemaId)
+        {
+            var movies = _context.Movies
+                .Where(m => m.CinemaId == cinemaId)
+                .ToList();
+
+            return View(movies);
+        }
         #region Index
 
         public async Task<IActionResult> Index(movieFilterVM movieFilterVM)
